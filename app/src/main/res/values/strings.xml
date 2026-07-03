@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Tindera Pro</string>
+    <string name="login_background">Login Background</string>
+    <string name="logo">Logo</string>
+    <string name="google_icon">Google Icon</string>
+    <string name="facebook_icon">Facebook icon</string>
+    <string name="terms">By continuing, you agree to our Terms of Service and Privacy Policy.</string>
+</resources>

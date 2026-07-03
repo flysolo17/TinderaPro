@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "909180528307",
+    "project_id": "tindera-pro",
+    "storage_bucket": "tindera-pro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909180528307:android:4f0412ac0de40833c972c6",
+        "android_client_info": {
+          "package_name": "com.potatolabs.tinderapro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "909180528307-kh51p04fdi2ru7q47ei2vra084vj3hcp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtXMWPlL9b89gQa6mCPWpjE8EEK7Dxxc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909180528307-kh51p04fdi2ru7q47ei2vra084vj3hcp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
