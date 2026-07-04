@@ -1,5 +1,7 @@
 package com.potatolabs.tinderapro.ui.features.auth
 
+import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +20,7 @@ import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,9 +29,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -38,16 +45,44 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.potatolabs.tinderapro.R
 import com.potatolabs.tinderapro.common.ui.TextLogo
+import com.potatolabs.tinderapro.common.utils.showToast
 import com.potatolabs.tinderapro.ui.theme.TinderaProTheme
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    onGoogleClick: () -> Unit = {},
-    onFacebookClick: () -> Unit = {}
+    viewModel : LoginViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val event = viewModel::onEvent
+    val activity = LocalContext.current as Activity
+    LoginScreen(
+        isLoading = state.isLoading,
+        onLoginWithGoogle = { event(LoginEvents.OnLoginWithGoogle(activity)) }
+    )
+}
+@Composable
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    isLoading : Boolean = false,
+    onLoginWithGoogle : () -> Unit = {}
+) {
+
+
+
     Scaffold(
         modifier = modifier
     ) { padding ->
@@ -120,19 +155,23 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    onClick = onGoogleClick,
+                    onClick = { onLoginWithGoogle() },
                     shape = MaterialTheme.shapes.medium,
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                 ) {
+                    if(isLoading) {
+                        CircularProgressIndicator()
+                    } else {
+                        Image(
+                            painter = painterResource(R.drawable.ic_google),
+                            contentDescription = null
+                        )
 
-                    Image(
-                        painter = painterResource(R.drawable.ic_google),
-                        contentDescription = null
-                    )
+                        Spacer(Modifier.width(12.dp))
 
-                    Spacer(Modifier.width(12.dp))
+                        Text("Continue with Google")
+                    }
 
-                    Text("Continue with Google")
                 }
 
                 Spacer(Modifier.height(12.dp))
@@ -141,7 +180,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    onClick = onFacebookClick,
+                    onClick = {},
                     shape = MaterialTheme.shapes.medium,
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                 ) {
